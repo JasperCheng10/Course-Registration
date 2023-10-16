@@ -2,107 +2,131 @@
   <main class="admincreatecourse">
     <h2>Create Course</h2>
     <p>
-      This page includes a simple todo list application, which showcases the
-      state management and form capabilities of vue.
+      Admin - Create Course Page
     </p>
 
-    <form @submit.prevent="createTodo" class="create-todo">
-      <label for="todo">New Todo</label>
-      <input type="text" id="todo" name="todo" v-model="newTodo" />
+    <form class="create-course">
+      <label for="todo">New Course</label>
+      <label for="department">Department</label>
+      <input type="text" id="department" name="Department" v-model="department" pattern="[A-Z]{4}" required />
+      <p> Required: Should consist of 4 letters A-Z </p>
+      <label for="coursenumber">Course Number</label>
+      <input type="text" id="coursenumber" name="CourseNumber" v-model="coursenumber" pattern="\d{4}" required />
+      <p> Required: Should consist of 4 numbers 0-9 </p>
+      <label for="coursename">Name</label>
+      <input type="text" id="coursename" name="Name" v-model="coursename" maxlength="250" required />
+      <p> Required: Should not be longer than 250 characters in length </p>
+      <label for="professor">Professor(s)</label>
+      <input type="text" id="professor" name="Professor" v-model="professor" required />
+      <p> Required </p>
+      <label for="starttime">Meeting Start Time</label>
+      <input type="time" id="starttime" name="Meeting Start Time" v-model="starttime" required/>
+      <p> Required </p>
+      <label for="endtime">Meeting End Time</label>
+      <input type="time" id="endtime" name="Meeting End Time" v-model="endtime" required />
+      <p> Required </p>
+      <label for="location">Meeting Location</label>
+      <input type="text" id="location" name="Meeting Location" v-model="location" required />
+      <p> Required </p>
+      <label for="credits">Credits</label>
+      <input type="number" id="credits" name="Credits" v-model="credits" min="1.00" max="15.00" step="1.00" required/>
+      <p> Required: Can be any whole credit amount from 1.00 - 15.00 </p>
+      <label for="capacity">Capacity</label>
+      <input type="text" id="capacity" name="Capacity" v-model="capacity" required/>
+      <p> Required </p>
+      <div class="waitlist">
+        <label for="waitlist">Waitlist Open</label>
+        <input type="checkbox" id="waitlist" name="WaitlistOpen" v-model="waitlist" required/>
+        <p> Required </p>
+      </div>
+      <label for="coursetype">Course Type</label>
+      <select id="coursetype" name="Course Type" v-model="coursetype" required>
+        <option value="lecture">Lecture</option>
+        <option value="discussion">Discussion</option>
+        <option value="lab">Lab</option>
+        <option value="seminar">Seminar</option>
+      </select>
+      <p> Required </p>
+      <label for="prereqs">Pre-requirements</label>
+      <input type="text" id="prereqs" name="Pre-requirements" v-model="prereqs" />
+      <p> Optional </p>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" v-model="description" ></textarea>
+      <p> Optional </p>
+      <button type="reset">Clear</button>
       <button type="submit">Save</button>
     </form>
-
-    <ul>
-      <!--
-        v-for requires a unique key for every element so that it can efficiently keep track
-        of each list item. it is possible for the user to type the same todo more than once,
-        so the todo itself isn't necessarily unique. the index on its own is of course unique,
-        it represents each unique place in the array. there are unfortunately edge case issues
-        with using the index alone that we don't need to get into, so we combine the todo and
-        the index into a unique key that will work in all situations
-      -->
-      <li v-for="(todo, index) in todos" :key="todo + index">
-        {{ todo }}
-        <button @click="deleteTodo(index)">Delete</button>
-      </li>
-
-      <!--
-        it is a good user experience practice to provide feedback when in an "emtpy state",
-        in this case, where there are no todos to show yet. this informs the user of
-        the current status of the system (working), and doesn't make them wonder if something
-        has gone wrong
-       -->
-      <li v-if="todos.length === 0">
-        <p>No Todos Yet, go ahead and create one!</p>
-      </li>
-    </ul>
-  </main>
+  </main>  
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-const newTodo = ref("");
-
-const todos = ref([]);
-
-// function to run when the create todo form is submitted
-function createTodo() {
-  // sanitize the input by removing the whitespace from the beginning and end of newTodo.value
-  const todoToAdd = newTodo.value.trim();
-
-  // if the sanitized input is not an empty string (i.e., an actual todo), add it to the list and reset the form
-  if (todoToAdd !== "") {
-    todos.value.push(todoToAdd);
-    newTodo.value = "";
-  }
-}
-
-// when a todo's delete button is clicked, the index of that todo is passed to this function
-// Array.splice takes an index in the array and a number of items to delete after that
-function deleteTodo(index) {
-  todos.value.splice(index, 1);
-}
-</script>
-
 <style>
-.form {
-  padding: 1rem;
+.create-course {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
-.form h2 {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+.create-course select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: white;
+  color: #333;
 }
 
-.form p {
-  margin-bottom: 1rem;
+.create-course textarea {
+  width: 100%;
+  height: 150px; /* Adjust the height as needed */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
 }
 
-/* flex layouts allow us to position elements next to each other that would otherwise have been on top of each other */
-.form ul {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-.form li {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+.create-course label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-/* create some space beneath the create todo form */
-.form form {
-  margin-bottom: 1rem;
+.create-course p {
+  margin-bottom: 10px;
 }
 
-/* set some default styling to buttons and inputs for borders, heights, and padding */
-.form :is(input, button) {
-  line-height: 2rem;
-  padding-inline: 0.5rem;
-  border-radius: 0.375rem;
-  border: 1px solid #d9d9d9;
-  margin-left: 0.5rem;
-  color: #202020;
+.create-course input.invalid {
+  border: 5px solid red;
 }
+
+.create-course input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.create-course button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.create-course button[type="reset"] {
+  background-color: #ccc;
+}
+
+.create-course button[type="submit"] {
+  background-color: #28a745;
+}
+
 </style>
