@@ -8,7 +8,7 @@
             <RouterLink to="/">Home</RouterLink>
           </li>
           <li>
-            <RouterLink to="/fetch">Fetch Example</RouterLink>
+            <RouterLink to="/fetch">Create an Account</RouterLink>
           </li>
           <li>
             <!--
@@ -19,6 +19,9 @@
           </li>
           <li>
             <RouterLink to="/admin/createcourse">Create Course</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/login">Login</RouterLink>
           </li>
         </ul>
       </nav>
