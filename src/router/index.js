@@ -7,6 +7,7 @@ import FormView from "../views/FormView.vue";
 import AdminCreateCourseView from "../views/AdminCreateCourseView.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignUp from "../views/SignUp.vue";
+import ScheduleView from "../views/ScheduleView.vue";
 
 const router = createRouter({
   // the history mode determines how vue router interacts with the url.
@@ -47,6 +48,11 @@ const router = createRouter({
       name: "Login",
       component: LoginPage,
     },
+    {
+      path: "/schedule",
+      name: "schedule",
+      component: ScheduleView,
+    }
   ],
 });
 
