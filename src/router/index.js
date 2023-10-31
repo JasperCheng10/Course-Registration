@@ -7,6 +7,8 @@ import FormView from "../views/FormView.vue";
 import AdminCreateCourseView from "../views/AdminCreateCourseView.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignUp from "../views/SignUp.vue";
+import ForgotPassword from "../views/ForgotPassword.vue";
+import AdminPage from "../views/AdminPage.vue";
 
 const router = createRouter({
   // the history mode determines how vue router interacts with the url.
@@ -46,6 +48,16 @@ const router = createRouter({
       path: "/login",
       name: "Login",
       component: LoginPage,
+    },
+    {
+      path: "/forgot-password",
+      name: "Forgot Password",
+      component: ForgotPassword
+    },
+    {
+      path: "/admin",
+      name: "Admin Page",
+      component: AdminPage
     },
   ],
 });

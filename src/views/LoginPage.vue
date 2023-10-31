@@ -1,6 +1,9 @@
 <template>
     <div class="login">
       <h2>Login</h2>
+      <div class="image">
+        <img src="https://cdn-icons-png.flaticon.com/512/2815/2815428.png">
+      </div>
       <form @submit.prevent="login">
         <div class="form-group">
           <label for="email">Email:</label>
@@ -9,6 +12,9 @@
         <div class="form-group">
           <label for="password">Password:</label>
           <input type="password" id="password" v-model="password" required>
+          <p>
+          <router-link to="/forgot-password">Forgot Password</router-link>
+        </p>
         </div>
         <button type="submit">Login</button>
       </form>
@@ -35,6 +41,17 @@
   </script>
   
   <style scoped>
+
+h2{
+  font-size: xx-large;
+  text-align: center;
+}
+  .image{
+    height: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
   .login {
     max-width: 400px;
     margin: 0 auto;
@@ -66,9 +83,11 @@
     background-color: #007BFF;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px 20px;
     cursor: pointer;
+    display: block;
+    margin: 0 auto;
   }
   </style>
   

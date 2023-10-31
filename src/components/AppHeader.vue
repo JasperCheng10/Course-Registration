@@ -8,6 +8,9 @@
             <RouterLink to="/">Home</RouterLink>
           </li>
           <li>
+            <RouterLink to="/admin">Admin Page</RouterLink>
+          </li>
+          <li>
             <RouterLink to="/fetch">Create an Account</RouterLink>
           </li>
           <li>
