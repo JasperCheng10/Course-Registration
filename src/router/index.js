@@ -8,6 +8,8 @@ import AdminCreateCourseView from "../views/AdminCreateCourseView.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignUp from "../views/SignUp.vue";
 import ScheduleView from "../views/ScheduleView.vue";
+import ForgotPassword from "../views/ForgotPassword.vue";
+import SearchTool from "../views/SearchTool.vue";
 
 const router = createRouter({
   // the history mode determines how vue router interacts with the url.
@@ -52,6 +54,16 @@ const router = createRouter({
       path: "/schedule",
       name: "schedule",
       component: ScheduleView,
+    },
+    {
+      path: "/forgot-password",
+      name: "forgotpassword",
+      component: ForgotPassword,
+    },
+    {
+      path:"/searchtool",
+      name: "searchtool",
+      component: SearchTool,
     },
   ],
 });
