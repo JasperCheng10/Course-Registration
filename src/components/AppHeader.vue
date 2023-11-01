@@ -1,30 +1,11 @@
 <template>
   <header class="app-header">
-    <div>
+    <div class="header-content">
       <h1>{{ title }}</h1>
       <nav>
-        <ul>
-          <li>
-            <RouterLink to="/">Home</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/admin">Admin Page</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/fetch">Create an Account</RouterLink>
-          </li>
-          <li>
-            <!--
-              This RouterLink does not point to a specific path, but rather the name of a route.
-              Check out router/index.js for how this is defined
-            -->
-            <RouterLink :to="{ name: 'form' }">Form Example</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/admin/createcourse">Create Course</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/login">Login</RouterLink>
+        <ul class="tabs">
+          <li v-for="tab in tabs" :key="tab.path" :class="{ active: isActiveTab(tab.path) }">
+            <RouterLink :to="tab.path">{{ tab.label }}</RouterLink>
           </li>
         </ul>
       </nav>
@@ -33,29 +14,69 @@
 </template>
 
 <script setup>
-// import the <RouterLink> component so that we can use it in the template above
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 
-// give this component a title property so that the parent component (app.vue) can set whatever title it wants
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-});
+const title = 'Course Registration';
+
+const tabs = [
+  { path: '/', label: 'Home' },
+  { path: '/fetch', label: 'Create an Account' },
+  { path: { name: 'form' }, label: 'Form Example' },
+  { path: '/schedule', label: 'Schedule View' },
+  { path: '/admin/createcourse', label: 'Create Course' },
+  { path: '/login', label: 'Login' },
+];
+
+const route = useRoute();
+
+function isActiveTab(path) {
+  return path === route.path || (path === '/' && route.path === '');
+}
 </script>
 
 <style>
-/* give the header itself a background color, a border, and add some padding to the content */
 .app-header {
   background-color: #fcfcfc;
   border-bottom: 1px solid #e0e0e0;
   padding: 1rem;
 }
 
-/* make the title within the header a larger and bolder font */
+.app-header .header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .app-header h1 {
   font-size: 2rem;
   font-weight: bold;
+  margin: 0;
+}
+
+.tabs {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.tabs li {
+  margin-right: 10px;
+}
+
+.tabs li a {
+  text-decoration: none;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.tabs li a:hover {
+  background-color: #f0f0f0;
+}
+
+.tabs li.active a {
+  background-color: #333;
+  color: #fff;
 }
 </style>
