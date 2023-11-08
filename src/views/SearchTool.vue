@@ -1,5 +1,5 @@
 <template>
-    <h2>Search Tool</h2>
+    <h2 id="search_header">Search</h2>
     <form class = "search" @submit.prevent = "search">
         <!-- Course ID
         Course Name
@@ -37,11 +37,14 @@
                 </th>
             </tr>
         </table>
-        <div>
+        <div id="button_container">
             <button type="submit" id="search_tool">Search</button>
         </div>
-
     </form>
+    <div>
+        <h2 id="search_result_header">Search Results</h2>
+        
+    </div>
 
 
 
@@ -66,13 +69,24 @@
 <style scoped>
 
 h2 {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: xx-large;
+    font-weight: bold;
+    margin-left: 391px;
 }
 .search{
-    max-width: 1000px;
+    max-width: 700px;
     margin: 0 auto;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
+
+}
+
+table {
+    display: block;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: #ccc;
 }
 
 td{
@@ -93,8 +107,21 @@ input[type="text"]{
     margin-right: 10px;
 }
 
-.search_tool  {
-    background-color:  #007BFF;
+#button_container{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 15px;
+    margin-bottom: 10px;  
+}
+
+button {
+    color: #fff;
+    background-color: #007BFF;
+    padding: 10px 20px;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 10px;
+    
 }
 
 </style>
