@@ -1,29 +1,51 @@
 <template>
     <h2>Search Tool</h2>
     <form class = "search" @submit.prevent = "search">
-        <div class="label1">
-            <div>
-                <label for="department">Department</label>
-            <input type="text" id="department" v-model="department">
-            </div>
-            <div>
-                <label for="course_id">Course #</label>
-                <input type="text" id="course_id" v-model="course_id">
-            </div>
-            <label for="course_name">Course Name</label>
-            <label for="professor">Professor</label>
-        </div>
+        <!-- Course ID
+        Course Name
+        Professor
+        Course Type
+        Content Area
+        Credits -->
+            <table>
+            <tr>
+                <th>
+                    <label for="course_id">Course_Id</label>
+                    <input type="text" id="course_id" v-model="course_id">
+                </th>
+                <th>
+                    <label for="course_name">Course Name</label>
+                    <input type="text" id="course_name" v-model="course_name">
+                </th>
+                <th>
+                    <label for="course_type">Course Type</label>
+                    <input type="text" id="course_type" v-model="course_type">
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <label for="credit">Credits</label>
+                    <input type="text" id="credits" v-model="credits">
+                </th>
+                <th>
+                    <label for="content_area">Content Area</label>
+                    <input type="text" id="content_area" v-model="content_area">
+                </th>
+                <th>
+                    <label for="professor">Professor</label>
+                <input type="text" id="professor" v-model="professor">
+                </th>
+            </tr>
+        </table>
         <div>
-            
-            
-            <input type="text" id="course_name" v-model="course_name">
-            <input type="text" id="professor" v-model="professor">
+            <button type="submit" id="search_tool">Search</button>
         </div>
-
-        
-        <!-- <input type="text" id="course_id" v-model="course_id"> -->
 
     </form>
+
+
+
+
 </template>
 
 <script>
@@ -44,7 +66,6 @@
 <style scoped>
 
 h2 {
-    background-color: aqua;
     font-size: xx-large;
 }
 .search{
@@ -53,18 +74,28 @@ h2 {
     background-color: #f5f5f5;
     border: 1px solid #ddd;
 }
-.label1 {
-    display: inline-block;
-    font-weight: bold;
-}
-/* label{
-    padding: 10px;
-} */
 
-/* input[type="text"]{
+td{
+    width: 100%;
+}
+
+label{
+    display: block;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+
+input[type="text"]{
     border: 1px solid #ccc;
     border-radius: 3px;
-} */
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.search_tool  {
+    background-color:  #007BFF;
+}
 
 </style>
 
