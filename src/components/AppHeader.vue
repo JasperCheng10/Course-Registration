@@ -23,6 +23,7 @@ const tabs = [
   { path: '/fetch', label: 'Create an Account' },
   { path: { name: 'search' }, label: 'Course Search' },
   { path: '/schedule', label: 'Schedule View' },
+  { path: '/mycourses', label: 'Course View' },
   { path: '/admin/createcourse', label: 'Create Course' },
   { path: '/login', label: 'Login' },
 ];
