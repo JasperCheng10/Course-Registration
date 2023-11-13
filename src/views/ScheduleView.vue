@@ -1,4 +1,4 @@
-<!-- ScheduleView.vue -->
+<!-- ScheduleView.vue new -->
 <template>
     <div>
       <h1>Weekly Class Schedule</h1>
