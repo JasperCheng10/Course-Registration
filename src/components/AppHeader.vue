@@ -21,7 +21,7 @@ const title = 'Course Registration';
 const tabs = [
   { path: '/', label: 'Home' },
   { path: '/fetch', label: 'Create an Account' },
-  { path: { name: 'form' }, label: 'Form Example' },
+  { path: { name: 'search' }, label: 'Course Search' },
   { path: '/schedule', label: 'Schedule View' },
   { path: '/admin/createcourse', label: 'Create Course' },
   { path: '/login', label: 'Login' },
