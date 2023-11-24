@@ -18,7 +18,6 @@ export default {
         { path: '/fetch', label: 'Create an Account' },
         { path: { name: 'search' }, label: 'Course Search' },
         { path: '/schedule', label: 'Schedule View' },
-        { path: '/searchtool', label: 'Search'},
         { path: '/admin/createcourse', label: 'Create Course' },
         { path: '/login', label: 'Login' },
       ]
