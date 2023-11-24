@@ -9,6 +9,7 @@ import LoginPage from "../views/LoginPage.vue";
 import SignUp from "../views/SignUp.vue";
 import ScheduleView from "../views/ScheduleView.vue";
 import StudentCourseView from "../views/StudentCourseView.vue";
+import Test from "../views/Test.vue";
 
 const router = createRouter({
   // the history mode determines how vue router interacts with the url.
@@ -58,6 +59,11 @@ const router = createRouter({
       path: "/mycourses",
       name: "mycourses",
       component: StudentCourseView,
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: Test,
     },
   ],
 });
