@@ -3,13 +3,12 @@
 // we start by importing the createRouter and createWebHistory functions, as well as the components describing each of our views
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import FormView from "../views/FormView.vue";
+import ClassSearch from "../views/ClassSearch.vue";
 import AdminCreateCourseView from "../views/AdminCreateCourseView.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignUp from "../views/SignUp.vue";
 import ScheduleView from "../views/ScheduleView.vue";
-import ForgotPassword from "../views/ForgotPassword.vue";
-import SearchTool from "../views/SearchTool.vue";
+import StudentCourseView from "../views/StudentCourseView.vue";
 
 const router = createRouter({
   // the history mode determines how vue router interacts with the url.
@@ -31,9 +30,9 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/form",
-      name: "form",
-      component: FormView,
+      path: "/search",
+      name: "search",
+      component: ClassSearch,
     },
     {
       path: "/fetch",
@@ -56,14 +55,9 @@ const router = createRouter({
       component: ScheduleView,
     },
     {
-      path: "/forgot-password",
-      name: "forgotpassword",
-      component: ForgotPassword,
-    },
-    {
-      path:"/searchtool",
-      name: "searchtool",
-      component: SearchTool,
+      path: "/mycourses",
+      name: "mycourses",
+      component: StudentCourseView,
     },
   ],
 });

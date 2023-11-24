@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="padding-bottom: 60px;">
     <Header :tabs="tabs" />
     <router-view />
     <Footer />
@@ -16,7 +16,7 @@ export default {
       tabs: [
         { path: '/', label: 'Home' },
         { path: '/fetch', label: 'Create an Account' },
-        { path: { name: 'form' }, label: 'Form Example' },
+        { path: { name: 'search' }, label: 'Course Search' },
         { path: '/schedule', label: 'Schedule View' },
         { path: '/searchtool', label: 'Search'},
         { path: '/admin/createcourse', label: 'Create Course' },
