@@ -10,6 +10,7 @@ import SignUp from "../views/SignUp.vue";
 import ScheduleView from "../views/ScheduleView.vue";
 import StudentCourseView from "../views/StudentCourseView.vue";
 import Test from "../views/Test.vue";
+import Profile from "../views/Profile.vue";
 
 const router = createRouter({
   // the history mode determines how vue router interacts with the url.
@@ -26,7 +27,7 @@ const router = createRouter({
   // and, most importantly, the component that should be rendered for the view
   routes: [
     {
-      path: "/",
+      path: "/home",
       name: "home",
       component: HomeView,
     },
@@ -61,9 +62,15 @@ const router = createRouter({
       component: StudentCourseView,
     },
     {
-      path: "/test",
-      name: "test",
+      path: "/",
+      name: "Test",
       component: Test,
+    },
+    {
+      path: "/profile",
+      name: "Profile",
+      component: Profile,
+
     },
   ],
 });

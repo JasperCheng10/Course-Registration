@@ -5,6 +5,7 @@
       <div class="welcome-content">
         <h2>Welcome to Section 2 Group 3 University</h2>
         <p>Explore our vibrant academic community dedicated to excellence.</p>
+        
       </div>
     </section>
 

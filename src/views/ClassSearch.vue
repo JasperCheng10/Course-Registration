@@ -2,6 +2,8 @@
   <div>
     <!-- Search Form -->
     <section class="search-form">
+      <p>Name: {{ parsedName }}</p>
+      <p>Email: {{ parsedEmail }}</p>
       <h3>Class Search</h3>
       <form @submit.prevent="searchClasses">
         <label for="courseName">Course Name:</label>
@@ -31,6 +33,11 @@
               </div>
             </div>
           </div>
+
+          <!-- Enroll button -->
+          <div class="enroll-button">
+            <button @click="enrollClass">Enroll</button>
+          </div>
         </div>
       </div>
       <p v-else>No results found.</p>
@@ -39,6 +46,9 @@
 </template>
 
 <script>
+import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -74,8 +84,10 @@ export default {
       if (value && value.N) return value.N;
       // Add other types here if needed
       return value || 'N/A';
-    }
-  }
+    },
+    enrollClass() {
+    },
+  },
 };
 </script>
 
@@ -158,4 +170,20 @@ button {
   margin-right: 5px;
 }
 
+/* Styles for the enroll button */
+.enroll-button {
+  display: flex;
+  align-items: center;
+}
+
+.enroll-button button {
+  padding: 10px 20px;
+  margin-left: auto; /* Push the button to the right */
+  border: 1px solid #003366;
+  border-radius: 5px;
+  background-color: #003366;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
 </style>

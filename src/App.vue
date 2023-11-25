@@ -14,12 +14,14 @@ export default {
   data() {
     return {
       tabs: [
-        { path: '/', label: 'Home' },
-        { path: '/fetch', label: 'Create an Account' },
+        { path: '/home', label: 'Home' },
+        //{ path: '/fetch', label: 'Create an Account' },
         { path: { name: 'search' }, label: 'Course Search' },
         { path: '/schedule', label: 'Schedule View' },
         { path: '/admin/createcourse', label: 'Create Course' },
-        { path: '/login', label: 'Login' },
+        //{ path: '/login', label: 'Login' },
+        { path: '/', label: 'Login' },
+        { path: '/profile', label: 'Profile' },
       ]
     };
   },

@@ -1,15 +1,17 @@
 <template>
-    <header>This is a test page</header>
+  <div>
+    <header>Login Page</header>
     <div>
-      <button @click="handleLogin">Log in</button>
+      <button v-if="!isAuthenticated" @click="handleLogin">Log in</button>
+      <button v-if="isAuthenticated" @click="handleLogout">Log out</button>
     </div>
-  </template>
+  </div>
+</template>
 
- <!--From Lab  -->
 <script setup>
 import { useAuth0 } from "@auth0/auth0-vue";
 
-const { loginWithRedirect } = useAuth0();
+const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
 const handleLogin = () => {
   loginWithRedirect({
@@ -18,21 +20,10 @@ const handleLogin = () => {
     },
   });
 };
-</script>
 
-<!-- From Auth0 Quickstart Tutorial -->
-  <!-- <script>
-    import { useAuth0 } from '@auth0/auth0-vue';
-  
-    export default {
-      setup() {
-        const { loginWithRedirect } = useAuth0();
-  
-        return {
-          login: () => {
-            loginWithRedirect();
-          }
-        };
-      }
-    };
-  </script> -->
+const handleLogout = () => {
+  logout({
+    returnTo: window.location.origin,
+  });
+};
+</script>
