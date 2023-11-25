@@ -20,12 +20,14 @@ const title = 'Course Registration';
 
 const tabs = [
   { path: '/', label: 'Home' },
-  { path: '/fetch', label: 'Create an Account' },
+  //{ path: '/fetch', label: 'Create an Account' },
   { path: { name: 'search' }, label: 'Course Search' },
   { path: '/schedule', label: 'Schedule View' },
   { path: '/mycourses', label: 'Course View' },
   { path: '/admin/createcourse', label: 'Create Course' },
-  { path: '/login', label: 'Login' },
+  //{ path: '/login', label: 'Login' },
+  { path: '/test', label: 'Test'},
+  { path: '/profile', label: 'Profile' },
 ];
 
 const route = useRoute();

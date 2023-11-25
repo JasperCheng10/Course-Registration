@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="isAuthenticated">
+      <p>Name: {{ parsedName }}</p>
+      <p>Email: {{ parsedEmail }}</p>
+    </div>
+
     <!-- Search Form -->
     <section class="search-form">
       <h3>Class Search</h3>
@@ -31,6 +36,11 @@
               </div>
             </div>
           </div>
+
+          <!-- Enroll button -->
+          <div class="enroll-button">
+            <button @click="enrollClass">Enroll</button>
+          </div>
         </div>
       </div>
       <p v-else>No results found.</p>
@@ -39,18 +49,35 @@
 </template>
 
 <script>
+import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
+
 export default {
+  setup() {
+    const { user, isAuthenticated } = useAuth0();
+    const userJsonString = JSON.stringify(user, null, 2);
+    const parsedUser = JSON.parse(userJsonString);
+    const parsedName = parsedUser._value.name;
+    const parsedEmail = parsedUser._value.email;
+
+    return {
+      isAuthenticated,
+      parsedName,
+      parsedEmail,
+    };
+  },
+
   data() {
     return {
       courseName: '',
       professor: '',
       courseID: '',
-      results: null
+      results: null,
     };
   },
   methods: {
     searchClasses() {
-      const url = `https://8dbuywnj95.execute-api.us-east-1.amazonaws.com/Final_stage_course/search?name=${this.courseName}`;
+      let url = `https://8dbuywnj95.execute-api.us-east-1.amazonaws.com/Final_stage_course/search?name=${this.courseName}`;
 
       if (this.professor) {
         url += `&professor=${this.professor}`;
@@ -61,22 +88,36 @@ export default {
       }
 
       fetch(url)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           this.results = data;
+          console.log(this.results.name.S);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error:', error);
         });
     },
     formatValue(value) {
       if (value && value.S) return value.S;
       if (value && value.N) return value.N;
-      // Add other types here if needed
       return value || 'N/A';
-    }
+    },
+    enrollClass() {
+      const courseData = {
+        name: this.parsedName,
+        courseName: this.results.name.S,
+      };
+
+      axios.post('https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/enroll', courseData)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      },
   }
-};
+}
 </script>
 
 <style>
@@ -158,4 +199,20 @@ button {
   margin-right: 5px;
 }
 
+/* Styles for the enroll button */
+.enroll-button {
+  display: flex;
+  align-items: center;
+}
+
+.enroll-button button {
+  padding: 10px 20px;
+  margin-left: auto; /* Push the button to the right */
+  border: 1px solid #003366;
+  border-radius: 5px;
+  background-color: #003366;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
 </style>
