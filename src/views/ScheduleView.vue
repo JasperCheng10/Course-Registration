@@ -1,127 +1,133 @@
 <template>
   <div>
-    <div class="center-button">
-      <button @click="viewSchedule" v-if="isAuthenticated">View Schedule</button>
+    <div v-if="isAuthenticated" class="user-info">
+      <p>Name: {{ parsedName }}</p>
+      <p>Email: {{ parsedEmail }}</p>
     </div>
+
+    <!-- View Schedule Button -->
+    <button v-if="isAuthenticated" @click="viewSchedule" class="view-schedule-btn">View Schedule</button>
 
     <!-- Schedule Section -->
     <section class="schedule">
-      <h3>Schedule</h3>
-      <div class="card-container" v-if="scheduleItems.length > 0">
-        <div class="card" v-for="(item, index) in scheduleItems" :key="index">
+      <h3>My Schedule</h3>
+      <div class="card-container" v-if="schedule.length > 0">
+        <div class="card" v-for="(course, index) in schedule" :key="index">
           <div class="card-content">
-            <h4>{{ item.name }}</h4>
-            <div class="card-details">
-              <strong>Course Name:</strong> {{ item.courseName }}
-            </div>
+            <h4>{{ course.courseName ? course.courseName.S : 'Course Name N/A' }}</h4>
+            <button @click="unenroll(course.courseName.S)" class="unenroll-btn">Unenroll</button>
           </div>
         </div>
       </div>
-      <p v-else>No schedule available.</p>
+      <p v-else>No classes in your schedule.</p>
     </section>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 import { ref } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
 
 export default {
-  data() {
+  setup() {
+    const { user, isAuthenticated } = useAuth0();
+    const userJsonString = JSON.stringify(user, null, 2);
+    const parsedUser = JSON.parse(userJsonString);
+    const parsedName = parsedUser._value.name;
+    const parsedEmail = parsedUser._value.email;
+    const schedule = ref([]);
+
+    const viewSchedule = () => {
+      const url = 'https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/testing';
+
+      axios.get(url, {
+        params: {
+          name: parsedName,
+        },
+      })
+      .then(response => {
+        schedule.value = response.data;
+      })
+      .catch(error => {
+        console.error('Error fetching schedule:', error);
+      });
+    };
+
+    const unenroll = (courseName) => {
+      const url = 'https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/delete';
+
+      axios.delete(url, {
+        data: {
+          name: parsedName,
+          courseName: courseName,
+        },
+      })
+      .then(response => {
+        // Update the schedule after successful unenrollment
+        viewSchedule();
+      })
+      .catch(error => {
+        console.error('Error unenrolling:', error);
+      });
+    };
+
     return {
-      isAuthenticated: true, // Change this to your authentication logic
-      scheduleItems: [],
+      isAuthenticated,
+      parsedName,
+      parsedEmail,
+      schedule,
+      viewSchedule,
+      unenroll,
     };
   },
-  methods: {
-    viewSchedule() {
-      const requestData = {
-        name: 'Jack Psaras',
-      };
-
-      let url = 'https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/enroll';
-
-      // Constructing the URL with query parameters
-      url += `?name=${requestData.name}`;
-
-      axios.get(url)
-        .then(response => {
-          if (response.data.statusCode === 200) {
-            this.scheduleItems = response.data.body.items;
-          } else {
-            console.error('Error fetching schedule:', response.data.body.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching schedule:', error.message);
-        });
-    },
-  },
-};
+}
 </script>
 
 <style>
-.center-button {
-  text-align: center;
-  margin-top: 50vh; /* Adjust this value to center the button vertically */
+.user-info {
+  margin-bottom: 20px;
 }
 
-.center-button button {
-  padding: 10px 20px;
-  border: 1px solid #003366;
+.view-schedule-btn {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
   border-radius: 5px;
-  background-color: #003366;
-  color: #fff;
-  font-size: 16px;
   cursor: pointer;
 }
 
 .schedule {
-  text-align: center;
   margin-top: 20px;
-}
-
-.schedule h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #003366;
 }
 
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
 }
 
 .card {
+  background-color: #f4f4f4;
   border: 1px solid #ddd;
+  margin: 10px;
+  padding: 15px;
   border-radius: 5px;
-  padding: 20px;
-  width: 500px;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin: 20px auto;
-  display: flex;
 }
 
 .card-content {
-  flex: 1;
+  text-align: center;
 }
 
-.card h4 {
-  font-size: 1.3rem;
-  margin: 0 0 20px;
-  color: #003366;
+.unenroll-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.card-details {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.card-details strong {
-  font-weight: bold;
-  margin-right: 5px;
-}
+/* Add more styles as needed */
 </style>
