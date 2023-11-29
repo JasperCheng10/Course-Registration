@@ -16,6 +16,16 @@
           <div class="card-content">
             <h4>{{ course.courseName ? course.courseName.S : 'Course Name N/A' }}</h4>
             <button @click="unenroll(course.courseName.S)" class="unenroll-btn">Unenroll</button>
+            <!-- Display additional course information -->
+            <div v-if="courseDetails[index]">
+              <p><strong>Location:</strong> {{ courseDetails[index].location.S }}</p>
+              <p><strong>Days:</strong> {{ courseDetails[index].days.S }}</p>
+              <p><strong>Seats:</strong> {{ courseDetails[index].seats.N }}</p>
+              <p><strong>Professor:</strong> {{ courseDetails[index].professor.S }}</p>
+              <p><strong>Major:</strong> {{ courseDetails[index].major.S }}</p>
+              <p><strong>Time:</strong> {{ courseDetails[index].time.S }}</p>
+              <p><strong>Type:</strong> {{ courseDetails[index].type.S }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -37,21 +47,35 @@ export default {
     const parsedName = parsedUser._value.name;
     const parsedEmail = parsedUser._value.email;
     const schedule = ref([]);
+    const courseDetails = ref([]);
 
-    const viewSchedule = () => {
+    const viewSchedule = async () => {
       const url = 'https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/testing';
 
-      axios.get(url, {
-        params: {
-          name: parsedName,
-        },
-      })
-      .then(response => {
+      try {
+        const response = await axios.get(url, {
+          params: {
+            name: parsedName,
+          },
+        });
+
         schedule.value = response.data;
-      })
-      .catch(error => {
+
+        // Fetch additional course details for each course
+        const promises = schedule.value.map(course => {
+          const courseDetailsUrl = 'https://8dbuywnj95.execute-api.us-east-1.amazonaws.com/Final_stage_course/search';
+          return axios.get(courseDetailsUrl, {
+            params: {
+              name: course.courseName.S,
+            },
+          });
+        });
+
+        const detailsResponses = await Promise.all(promises);
+        courseDetails.value = detailsResponses.map(response => response.data);
+      } catch (error) {
         console.error('Error fetching schedule:', error);
-      });
+      }
     };
 
     const unenroll = (courseName) => {
@@ -77,6 +101,7 @@ export default {
       parsedName,
       parsedEmail,
       schedule,
+      courseDetails,
       viewSchedule,
       unenroll,
     };
