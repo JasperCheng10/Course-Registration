@@ -1,105 +1,158 @@
-<!-- ScheduleView.vue new -->
 <template>
-    <div>
-      <h1>Weekly Class Schedule</h1>
-      <div class="week-calendar">
-        <div class="header">
-          <div v-for="day in weekDays" :key="day" class="day-header">{{ day }}</div>
-        </div>
-        <div class="calendar">
-          <div v-for="day in weekDays" :key="day" class="day-column">
-            <div v-for="classItem in getClassesByDay(getDayIndex(day))" :key="classItem.id" class="class-item">
-              <h4>{{ classItem.title }}</h4>
-              <p>Professor: {{ classItem.professor }}</p>
-              <p>Time: {{ classItem.time }}</p>
-              <p>Location: {{ classItem.location }}</p>
+  <div>
+    <div v-if="isAuthenticated" class="user-info">
+      <p>Name: {{ parsedName }}</p>
+      <p>Email: {{ parsedEmail }}</p>
+    </div>
+
+    <!-- View Schedule Button -->
+    <button v-if="isAuthenticated" @click="viewSchedule" class="view-schedule-btn">View Schedule</button>
+
+    <!-- Schedule Section -->
+    <section class="schedule">
+      <h3>My Schedule</h3>
+      <div class="card-container" v-if="schedule.length > 0">
+        <div class="card" v-for="(course, index) in schedule" :key="index">
+          <div class="card-content">
+            <h4>{{ course.courseName ? course.courseName.S : 'Course Name N/A' }}</h4>
+            <button @click="unenroll(course.courseName.S)" class="unenroll-btn">Unenroll</button>
+            <!-- Display additional course information -->
+            <div v-if="courseDetails[index]">
+              <p><strong>Location:</strong> {{ courseDetails[index].location.S }}</p>
+              <p><strong>Days:</strong> {{ courseDetails[index].days.S }}</p>
+              <p><strong>Seats:</strong> {{ courseDetails[index].seats.N }}</p>
+              <p><strong>Professor:</strong> {{ courseDetails[index].professor.S }}</p>
+              <p><strong>Major:</strong> {{ courseDetails[index].major.S }}</p>
+              <p><strong>Time:</strong> {{ courseDetails[index].time.S }}</p>
+              <p><strong>Type:</strong> {{ courseDetails[index].type.S }}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </template>
-  
-  <script>
-  import { useAuth0 } from '@auth0/auth0-vue';
-  
-  export default {
-    data() {
-      return {
-        courses: [
-          // Example courses for each day of the week
-          { id: 1, title: 'Mathematics', professor: 'Dr. Smith', time: '8:00 AM - 9:30 AM', location: 'Room 101', day: 'Monday' },
-          { id: 2, title: 'Physics', professor: 'Prof. Johnson', time: '10:00 AM - 11:30 AM', location: 'Room 205', day: 'Tuesday' },
-          { id: 3, title: 'Literature', professor: 'Dr. Brown', time: '12:00 PM - 1:30 PM', location: 'Room 303', day: 'Wednesday' },
-          { id: 4, title: 'Computer Science', professor: 'Prof. Davis', time: '2:00 PM - 3:30 PM', location: 'Room 402', day: 'Thursday' },
-          { id: 5, title: 'History', professor: 'Dr. Lee', time: '4:00 PM - 5:30 PM', location: 'Room 505', day: 'Friday' }
-          // Add more courses as necessary
-        ],
-        weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-      };
-    },
-    methods: {
-      getDayIndex(day) {
-        return this.weekDays.indexOf(day);
-      },
-      getClassesByDay(dayIndex) {
-        return this.courses.filter(course => course.day === this.weekDays[dayIndex]);
+      <p v-else>No classes in your schedule.</p>
+    </section>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
+
+export default {
+  setup() {
+    const { user, isAuthenticated } = useAuth0();
+    const userJsonString = JSON.stringify(user, null, 2);
+    const parsedUser = JSON.parse(userJsonString);
+    const parsedName = parsedUser._value.name;
+    const parsedEmail = parsedUser._value.email;
+    const schedule = ref([]);
+    const courseDetails = ref([]);
+
+    const viewSchedule = async () => {
+      const url = 'https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/testing';
+
+      try {
+        const response = await axios.get(url, {
+          params: {
+            name: parsedName,
+          },
+        });
+
+        schedule.value = response.data;
+
+        // Fetch additional course details for each course
+        const promises = schedule.value.map(course => {
+          const courseDetailsUrl = 'https://8dbuywnj95.execute-api.us-east-1.amazonaws.com/Final_stage_course/search';
+          return axios.get(courseDetailsUrl, {
+            params: {
+              name: course.courseName.S,
+            },
+          });
+        });
+
+        const detailsResponses = await Promise.all(promises);
+        courseDetails.value = detailsResponses.map(response => response.data);
+      } catch (error) {
+        console.error('Error fetching schedule:', error);
       }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  /* Add your styles here */
-  .week-calendar {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .header {
-    display: flex;
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .day-header {
-    flex: 1;
-    border-right: 1px solid #ccc;
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  .calendar {
-    display: flex;
-  }
-  
-  .day-column {
-    flex: 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-right: 10px;
-  }
-  
-  .class-item {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .class-item h4 {
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .class-item p {
-    margin-bottom: 5px;
-    color: #666;
-  }
-  </style>
-  
+    };
+
+    const unenroll = (courseName) => {
+      const url = 'https://xb55sqy2kf.execute-api.us-east-1.amazonaws.com/prod/delete';
+
+      axios.delete(url, {
+        data: {
+          name: parsedName,
+          courseName: courseName,
+        },
+      })
+      .then(response => {
+        // Update the schedule after successful unenrollment
+        viewSchedule();
+      })
+      .catch(error => {
+        console.error('Error unenrolling:', error);
+      });
+    };
+
+    return {
+      isAuthenticated,
+      parsedName,
+      parsedEmail,
+      schedule,
+      courseDetails,
+      viewSchedule,
+      unenroll,
+    };
+  },
+}
+</script>
+
+<style>
+.user-info {
+  margin-bottom: 20px;
+}
+
+.view-schedule-btn {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.schedule {
+  margin-top: 20px;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.card-content {
+  text-align: center;
+}
+
+.unenroll-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Add more styles as needed */
+</style>
