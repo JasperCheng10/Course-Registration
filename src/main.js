@@ -5,7 +5,7 @@ import { createAuth0 } from '@auth0/auth0-vue'
 
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
+import router from "./router/index";
 
 const app = createApp(App);
 
@@ -23,4 +23,5 @@ app
         })
     )
 
+app.use(router);
 app.mount("#app");

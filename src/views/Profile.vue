@@ -23,6 +23,8 @@ export default {
     const parsedName = parsedUser._value.name;
     const parsedEmail = parsedUser._value.email;
 
+    
+
     const sendUserData = async () => {
       try {
         const response = await axios.post('https://5ctsolryl1.execute-api.us-east-1.amazonaws.com/prod/create', {

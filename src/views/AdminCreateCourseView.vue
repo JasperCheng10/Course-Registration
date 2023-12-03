@@ -64,6 +64,9 @@
         <button type="submit" class="btn-save">Save</button>
       </div>
     </form>
+    <div class="form-group">
+      <a href="http://jack-s-bucket.s3-website-us-east-1.amazonaws.com" target="_blank" class="btn-help">Help</a>
+    </div>
   </main>
 </template>
 
